@@ -1,6 +1,6 @@
 #!/bin/bash
 # idleKernel for Samsung Galaxy Note 3 build script by jcadduono
-# This build script is for AOSP/CyanogenMod only
+# This build script is for TeamWin Recovery Project only
 # This build script builds all variants in /ik.ramdisk/variant/
 
 ################### BEFORE STARTING ################
@@ -23,9 +23,11 @@ RDIR=$(pwd)
 # version number
 VER=6.5
 
-# output directory of flashable kernel
-OUT_DIR_ENFORCING="/media/vboxshared/builds/cm12.1/v"$VER"_"$(date +'%Y_%m_%d')
-OUT_DIR_PERMISSIVE="/media/vboxshared/builds/cm12.1/selinux_permissive/v"$VER"_"$(date +'%Y_%m_%d')
+# version number of TWRP in ramdisk
+TWRP_VER=2.8.7.0
+
+# output directory of flashable recovery
+OUT_DIR="/media/vboxshared/builds/twrp/v"$VER"_"$(date +'%Y_%m_%d')
 
 # should we make a TWRP flashable zip? (1 = yes, 0 = no)
 MAKE_ZIP=1
@@ -43,10 +45,10 @@ SET_KERNEL_VERSION()
 {
 	# kernel version string appended to 3.4.x-idleKernel-hlte-
 	# (shown in Settings -> About device)
-	KERNEL_VERSION=$VARIANT-$VER-cm12.1
+	KERNEL_VERSION=$VARIANT-$VER-twrp
 
-	# output filename of flashable kernel
-	OUT_NAME=idleKernel-hlte-$KERNEL_VERSION
+	# output filename of flashable recovery
+	OUT_NAME=twrp-$TWRP_VER-idleKernel-$VER-hlte-$VARIANT
 }
 
 ############## SCARY NO-TOUCHY STUFF ###############
@@ -64,10 +66,8 @@ CLEAN_BUILD()
 	echo "Removing old boot.img..."
 	rm -f ik.zip/boot.img
 	echo "Removing old zip/tar.md5 files..."
-	rm -f $OUT_DIR_ENFORCING/$OUT_NAME.zip
-	rm -f $OUT_DIR_ENFORCING/$OUT_NAME.tar.md5
-	rm -f $OUT_DIR_PERMISSIVE/$OUT_NAME.zip
-	rm -f $OUT_DIR_PERMISSIVE/$OUT_NAME.tar.md5
+	rm -f $OUT_DIR/$OUT_NAME.zip
+	rm -f $OUT_DIR/$OUT_NAME.tar.md5
 }
 
 BUILD_KERNEL()
@@ -102,12 +102,12 @@ BUILD_BOOT_IMG()
 	$RDIR/scripts/mkqcdtbootimg/mkqcdtbootimg --kernel $KDIR/zImage \
 		--ramdisk $KDIR/ramdisk.cpio.xz \
 		--dt_dir $KDIR \
-		--cmdline "quiet console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F androidboot.bootdevice=msm_sdcc.1 androidboot.selinux=$SELINUX" \
+		--cmdline "quiet console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F androidboot.bootdevice=msm_sdcc.1" \
 		--base 0x00000000 \
 		--pagesize 2048 \
 		--ramdisk_offset 0x02900000 \
 		--tags_offset 0x02700000 \
-		--output $RDIR/ik.zip/boot.img 
+		--output $RDIR/ik.zip/recovery.img 
 }
 
 CREATE_ZIP()
@@ -122,15 +122,14 @@ CREATE_TAR()
 {
 	echo "Compressing to Odin flashable tar.md5 file..."
 	cd $RDIR/ik.zip
-	tar -H ustar -c boot.img > $OUT_DIR/$OUT_NAME.tar
+	tar -H ustar -c recovery.img > $OUT_DIR/$OUT_NAME.tar
 	cd $OUT_DIR
 	md5sum -t $OUT_NAME.tar >> $OUT_NAME.tar
 	mv $OUT_NAME.tar $OUT_NAME.tar.md5
 	cd $RDIR
 }
 
-mkdir -p $OUT_DIR_ENFORCING
-mkdir -p $OUT_DIR_PERMISSIVE
+mkdir -p $OUT_DIR
 
 for V in $RDIR/ik.ramdisk/variant/*
 do
@@ -141,13 +140,6 @@ do
 		echo "Device variant/carrier $VARIANT not found in arm configs!"
 		continue
 	elif CLEAN_BUILD && BUILD_KERNEL && BUILD_RAMDISK; then
-		OUT_DIR=$OUT_DIR_ENFORCING
-		SELINUX="enforcing"
-		BUILD_BOOT_IMG
-		if [ $MAKE_ZIP -eq 1 ]; then CREATE_ZIP; fi
-		if [ $MAKE_TAR -eq 1 ]; then CREATE_TAR; fi
-		OUT_DIR=$OUT_DIR_PERMISSIVE
-		SELINUX="permissive"
 		BUILD_BOOT_IMG
 		if [ $MAKE_ZIP -eq 1 ]; then CREATE_ZIP; fi
 		if [ $MAKE_TAR -eq 1 ]; then CREATE_TAR; fi
