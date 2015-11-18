@@ -41,6 +41,10 @@ TWRP_VER=2.8.7.0
 # (shown in Settings -> About device)
 KERNEL_VERSION=$VARIANT-$VER-twrp
 
+[ -z $PERMISSIVE ] && \
+# should we boot with SELinux mode set to permissive? (1 = permissive, 0 = enforcing)
+PERMISSIVE=1
+
 # output directory of flashable recovery
 OUT_DIR=$RDIR
 
@@ -75,6 +79,8 @@ if ! [ -d $RDIR"/ik.ramdisk/variant/$VARIANT/" ] ; then
 	exit -1
 fi
 
+[ $PERMISSIVE -eq 1 ] && SELINUX="never_enforce" || SELINUX="always_enforce"
+
 KDIR=$RDIR/build/arch/arm/boot
 
 CLEAN_BUILD()
@@ -95,7 +101,8 @@ BUILD_KERNEL()
 	cd $RDIR
 	mkdir -p build
 	make -C $RDIR O=build ik_defconfig \
-		VARIANT_DEFCONFIG=variant_hlte_$VARIANT
+		VARIANT_DEFCONFIG=variant_hlte_$VARIANT \
+		SELINUX_DEFCONFIG=selinux_$SELINUX
 	echo "Starting build..."
 	make -C $RDIR O=build -j"$THREADS"
 }
@@ -105,12 +112,11 @@ BUILD_RAMDISK()
 	echo "Building ramdisk structure..."
 	cd $RDIR
 	mkdir -p build/ramdisk
-	cp -ar ik.ramdisk/common/* build/ramdisk
-	cp -ar ik.ramdisk/variant/$VARIANT/* build/ramdisk
-	echo "Building ramdisk.img..."
+	cp -ar ik.ramdisk/common/* ik.ramdisk/variant/$VARIANT/* build/ramdisk
 	cd $RDIR/build/ramdisk
 	mkdir -pm 755 dev proc sys system
 	mkdir -pm 771 data
+	echo "Building ramdisk.img..."
 	find | fakeroot cpio -o -H newc | xz --check=crc32 --lzma2=dict=2MiB > $KDIR/ramdisk.cpio.xz
 	cd $RDIR
 }
@@ -121,12 +127,12 @@ BUILD_BOOT_IMG()
 	$RDIR/scripts/mkqcdtbootimg/mkqcdtbootimg --kernel $KDIR/zImage \
 		--ramdisk $KDIR/ramdisk.cpio.xz \
 		--dt_dir $KDIR \
-		--cmdline "quiet console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F androidboot.bootdevice=msm_sdcc.1" \
+		--cmdline "console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F" \
 		--base 0x00000000 \
 		--pagesize 2048 \
-		--ramdisk_offset 0x02900000 \
-		--tags_offset 0x02700000 \
-		--output $RDIR/ik.zip/recovery.img 
+		--ramdisk_offset 0x02000000 \
+		--tags_offset 0x01E00000 \
+		--output $RDIR/ik.zip/recovery.img
 }
 
 CREATE_ZIP()
@@ -148,11 +154,15 @@ CREATE_TAR()
 	cd $RDIR
 }
 
-if CLEAN_BUILD && BUILD_KERNEL && BUILD_RAMDISK && BUILD_BOOT_IMG; then
+DO_BUILD()
+{
+	echo "Starting build for $OUT_NAME, SELINUX = $SELINUX..."
+	CLEAN_BUILD && BUILD_KERNEL && BUILD_RAMDISK && BUILD_BOOT_IMG || {
+		echo "Error!"
+		exit -1
+	}
 	if [ $MAKE_ZIP -eq 1 ]; then CREATE_ZIP; fi
 	if [ $MAKE_TAR -eq 1 ]; then CREATE_TAR; fi
-	echo "Finished!"
-else
-	echo "Error!"
-	exit -1
-fi
+}
+
+DO_BUILD

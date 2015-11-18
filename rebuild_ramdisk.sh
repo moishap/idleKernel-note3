@@ -40,6 +40,7 @@ KERNEL_VERSION=$VARIANT-$VER-twrp
 
 # output directory of flashable recovery
 OUT_DIR=$RDIR
+
 # output filename of flashable recovery
 OUT_NAME=twrp-$TWRP_VER-idleKernel-$VER-hlte-$VARIANT
 
@@ -79,12 +80,11 @@ BUILD_RAMDISK()
 	echo "Building ramdisk structure..."
 	cd $RDIR
 	mkdir -p build/ramdisk
-	cp -ar ik.ramdisk/common/* build/ramdisk
-	cp -ar ik.ramdisk/variant/$VARIANT/* build/ramdisk
-	echo "Building ramdisk.img..."
+	cp -ar ik.ramdisk/common/* ik.ramdisk/variant/$VARIANT/* build/ramdisk
 	cd $RDIR/build/ramdisk
 	mkdir -pm 755 dev proc sys system
 	mkdir -pm 771 data
+	echo "Building ramdisk.img..."
 	find | fakeroot cpio -o -H newc | xz --check=crc32 --lzma2=dict=2MiB > $KDIR/ramdisk.cpio.xz
 	cd $RDIR
 }
@@ -95,12 +95,12 @@ BUILD_BOOT_IMG()
 	$RDIR/scripts/mkqcdtbootimg/mkqcdtbootimg --kernel $KDIR/zImage \
 		--ramdisk $KDIR/ramdisk.cpio.xz \
 		--dt_dir $KDIR \
-		--cmdline "quiet console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F androidboot.bootdevice=msm_sdcc.1" \
+		--cmdline "console=null androidboot.hardware=qcom user_debug=31 msm_rtb.filter=0x3F" \
 		--base 0x00000000 \
 		--pagesize 2048 \
-		--ramdisk_offset 0x02900000 \
-		--tags_offset 0x02700000 \
-		--output $RDIR/ik.zip/recovery.img 
+		--ramdisk_offset 0x02000000 \
+		--tags_offset 0x01E00000 \
+		--output $RDIR/ik.zip/recovery.img
 }
 
 CREATE_ZIP()
