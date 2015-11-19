@@ -1,4 +1,5 @@
 import /init.recovery.${ro.hardware}.rc
+import /init.idlekernel.rc
 
 on early-init
     # Apply strict SELinux checking of PROT_EXEC on mmap/mprotect calls.
