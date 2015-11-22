@@ -53,6 +53,12 @@ on fs
     write /sys/class/android_usb/android0/iProduct ${ro.product.model}
     write /sys/class/android_usb/android0/iSerial ${ro.serialno}
 
+    # Enable USB mass storage for dwc3
+    symlink /sys/devices/msm_dwc3/f9200000.dwc3/gadget /dev/gadget
+    write /dev/gadget/lun0/cdrom 0
+    write /dev/gadget/lun0/ro 0
+    write /dev/gadget/lun0/nofua 0
+
 on boot
     ifup lo
     hostname localhost
