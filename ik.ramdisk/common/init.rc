@@ -1,4 +1,3 @@
-import /init.recovery.${ro.hardware}.rc
 import /init.idlekernel.rc
 
 on early-init
