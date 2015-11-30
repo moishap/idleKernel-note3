@@ -1,10 +1,10 @@
-#!/system/bin/sh
+#!/sbin/sh
 
 VERSION=1.3
 
 LUN=/sys/devices/msm_dwc3/f9200000.dwc3/gadget/lun0
 SDCARD=/dev/block/mmcblk1
-SDMOUNT=/storage/extSdCard
+SDMOUNT=/external_sd
 SD_MOUNTED=false
 USB_MODE=false
 ADB_ON=false
@@ -30,13 +30,6 @@ DISPLAY_USAGE() {
 	echo "  -v, version          displays version info"
 	echo
 	echo "For more help & to report bugs contact <jc@adduono.com>"
-}
-
-CHECK_SU() {
-	[ -z "$(ls /data/data)" ] && {
-		echo "Must be superuser!" 1>&2
-		exit 1
-	}
 }
 
 CHECK_SD_MOUNTED() {
@@ -103,9 +96,9 @@ DISPLAY_STATUS() {
 	}
 	CHECK_SD_MOUNTED
 	$SD_MOUNTED && {
-		echo "SDcard is currently mounted in Android."
+		echo "SDcard is currently mounted in TWRP."
 	} || {
-		echo "SDcard is not mounted in Android."
+		echo "SDcard is not mounted in TWRP."
 	}
 }
 
@@ -165,7 +158,7 @@ MOUNT_SDCARD() {
 	CHECK_SD_MOUNTED
 	$SD_MOUNTED && return
 	echo "Mounting SDcard to $SDMOUNT..."
-	vdc volume mount $SDMOUNT > /dev/null 2>&1
+	mount $SDMOUNT > /dev/null 2>&1
 	CHECK_SD_MOUNTED
 	$SD_MOUNTED && {
 		echo "SDcard mounted successfully."
@@ -181,7 +174,7 @@ UNMOUNT_SDCARD() {
 	CHECK_SD_MOUNTED
 	$SD_MOUNTED || return
 	echo "Unmounting SDcard from $SDMOUNT..."
-	vdc volume unmount $SDMOUNT > /dev/null 2>&1
+	umount $SDMOUNT > /dev/null 2>&1
 	CHECK_SD_MOUNTED
 	$SD_MOUNTED && {
 		echo "Error: Unable to unmount SDcard!" 1>&2
@@ -195,7 +188,7 @@ UNMOUNT_SDCARD() {
 ASK_MOUNT_SDCARD() {
 	CHECK_SD_MOUNTED
 	$SD_MOUNTED && return
-	echo -n "Mount SDcard in Android? (y/n): "
+	echo -n "Mount SDcard in TWRP? (y/n): "
 	read OPEN
 	case "$OPEN" in
 	y|Y|1|yes)
@@ -290,7 +283,6 @@ CHECK_USB_30() {
 
 case $1 in
 mtp)
-	CHECK_SU
 	case $2 in
 	1|on|start|enable)
 		ASK_SD_MOUNT=true
@@ -308,7 +300,6 @@ mtp)
 	esac
 	;;
 ptp)
-	CHECK_SU
 	case $2 in
 	1|on|start|enable)
 		ASK_SD_MOUNT=true
@@ -326,7 +317,6 @@ ptp)
 	esac
 	;;
 ums)
-	CHECK_SU
 	case $2 in
 	1|on|start|enable)
 		CHECK_USB_30 $3
@@ -344,7 +334,6 @@ ums)
 	esac
 	;;
 default)
-	CHECK_SU
 	ASK_SD_MOUNT=true
 	USB_DEFAULT
 	echo "Done."
