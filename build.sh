@@ -38,7 +38,7 @@ VARIANT=can
 
 [ -z $VER ] && \
 # version number
-VER=6.6.4
+VER=6.6.5
 
 # version number of TWRP in ramdisk
 TWRP_VER=2.8.7.0
