@@ -21,7 +21,7 @@ RDIR=$(pwd)
 
 [ -z $VER ] && \
 # version number
-VER=6.6.5
+VER=$(cat $RDIR/VERSION)
 
 # version number of TWRP in ramdisk
 TWRP_VER=2.8.7.0
