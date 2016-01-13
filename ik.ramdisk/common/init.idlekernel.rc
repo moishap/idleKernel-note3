@@ -4,8 +4,9 @@ service idlekernel-apply /sbin/sh /init.idlekernel.sh
      disabled
      oneshot
 
-on property:sys.boot_completed=1
-     start idlekernel-apply
+# Disable settings from being applied in recovery just to be safe
+#on property:sys.boot_completed=1
+#     start idlekernel-apply
 
 on early-init
      write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 2265600
