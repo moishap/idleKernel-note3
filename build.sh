@@ -34,7 +34,7 @@ RDIR=$(pwd)
 # japanese variants:
 #	dcm = N900D / SC-01F  (NTT Docomo)
 #	kdi = N900J / SCL22   (au by KDDI)
-VARIANT=can
+VARIANT=tmo
 
 [ -z $VER ] && \
 # version number
@@ -61,7 +61,7 @@ MAKE_ZIP=1
 MAKE_TAR=1
 
 # directory containing cross-compile arm-cortex_a15 toolchain
-TOOLCHAIN=/home/jc/build/toolchain/arm-cortex_a15-linux-gnueabihf-linaro_4.9.4-2015.06
+TOOLCHAIN=/sdd/android/arm-cortex_a15-linux-gnueabihf-linaro_4.9.4-2015.06
 
 # amount of cpu threads to use in kernel make process
 THREADS=5
