@@ -1,6 +1,6 @@
 #!/bin/bash
 # idleKernel for Samsung Galaxy Note 3 build script by jcadduono
-# This build script is for Touchwiz Lollipop only
+# This build script is for Note 5 Touchwiz ports only
 
 ################### BEFORE STARTING ################
 #
@@ -34,7 +34,11 @@ RDIR=$(pwd)
 # japanese variants:
 #	dcm = N900D / SC-01F  (NTT Docomo)
 #	kdi = N900J / SCL22   (au by KDDI)
+<<<<<<< HEAD
 VARIANT=tmo
+=======
+VARIANT=can
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 [ -z $VER ] && \
 # version number
@@ -42,7 +46,7 @@ VER=$(cat $RDIR/VERSION)
 
 # kernel version string appended to 3.4.x-idleKernel-hlte-
 # (shown in Settings -> About device)
-KERNEL_VERSION=$VARIANT-$VER
+KERNEL_VERSION=$VARIANT-$VER-note5port
 
 [ -z $PERMISSIVE ] && \
 # should we boot with SELinux mode set to permissive? (1 = permissive, 0 = enforcing)

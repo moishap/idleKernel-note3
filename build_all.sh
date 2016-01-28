@@ -1,6 +1,10 @@
 #!/bin/bash
 # idleKernel for Samsung Galaxy Note 3 build script by jcadduono
+<<<<<<< HEAD
 # This build script is for Touchwiz Lollipop only
+=======
+# This build script is for Note 5 Touchwiz ports only
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 # This build script builds all variants in /ik.ramdisk/variant/
 
 ################### BEFORE STARTING ################
@@ -24,8 +28,13 @@ RDIR=$(pwd)
 VER=$(cat $RDIR/VERSION)
 
 # output directory of flashable kernel
+<<<<<<< HEAD
 OUT_DIR_ENFORCING="$RDIR/touchwiz-lollipop/selinux_enforcing/v"$VER"_"$(date +'%Y_%m_%d')
 OUT_DIR_PERMISSIVE="$RDIR/touchwiz-lollipop/v"$VER"_"$(date +'%Y_%m_%d')
+=======
+OUT_DIR_ENFORCING="/home/jc/idlekernel.com/note5port/selinux_enforcing/v"$VER"_"$(date +'%Y_%m_%d')
+OUT_DIR_PERMISSIVE="/home/jc/idlekernel.com/note5port/v"$VER"_"$(date +'%Y_%m_%d')
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 # should we make a TWRP flashable zip? (1 = yes, 0 = no)
 MAKE_ZIP=1
@@ -34,7 +43,11 @@ MAKE_ZIP=1
 MAKE_TAR=1
 
 # directory containing cross-compile arm-cortex_a15 toolchain
+<<<<<<< HEAD
 TOOLCHAIN=/sdd/android/arm-cortex_a15-linux-gnueabihf-linaro_4.9.4-2015.06
+=======
+TOOLCHAIN=/home/jc/build/toolchain/arm-cortex_a15-linux-gnueabihf-linaro_4.9.4-2015.06
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 # amount of cpu threads to use in kernel make process
 THREADS=5
@@ -43,7 +56,11 @@ SET_KERNEL_VERSION()
 {
 	# kernel version string appended to 3.4.x-idleKernel-hlte-
 	# (shown in Settings -> About device)
+<<<<<<< HEAD
 	KERNEL_VERSION=$VARIANT-$VER
+=======
+	KERNEL_VERSION=$VARIANT-$VER-note5port
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 	# output filename of flashable kernel
 	OUT_NAME=idleKernel-hlte-$KERNEL_VERSION
@@ -133,7 +150,11 @@ DO_BUILD()
 	if [ $MAKE_TAR -eq 1 ]; then CREATE_TAR; fi
 }
 
+<<<<<<< HEAD
 mkdir -p $OUT_DIR_ENFORCING
+=======
+#mkdir -p $OUT_DIR_ENFORCING
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 mkdir -p $OUT_DIR_PERMISSIVE
 
 for V in $RDIR/ik.ramdisk/variant/*
@@ -145,9 +166,15 @@ do
 	else
 		SET_KERNEL_VERSION
 		export LOCALVERSION=$KERNEL_VERSION
+<<<<<<< HEAD
 		OUT_DIR=$OUT_DIR_ENFORCING
 		SELINUX="always_enforce"
 		DO_BUILD
+=======
+		#OUT_DIR=$OUT_DIR_ENFORCING
+		#SELINUX="always_enforce"
+		#DO_BUILD
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 		OUT_DIR=$OUT_DIR_PERMISSIVE
 		SELINUX="never_enforce"
 		DO_BUILD

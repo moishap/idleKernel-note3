@@ -1,6 +1,10 @@
 #!/bin/bash
 # idleKernel for Samsung Galaxy Note 3 ramdisk setup script by jcadduono
+<<<<<<< HEAD
 # This script is for Touchwiz Lollipop only
+=======
+# This script is for Note 5 Touchwiz ports only
+>>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 # root directory of idleKernel git repo (default is this script's location)
 RDIR=$(pwd)
