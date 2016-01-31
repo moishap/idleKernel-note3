@@ -31,11 +31,7 @@ RDIR=$(pwd)
 # japanese variants:
 #	dcm = N900D / SC-01F  (NTT Docomo)
 #	kdi = N900J / SCL22   (au by KDDI)
-<<<<<<< HEAD
 VARIANT=tmo
-=======
-VARIANT=can
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 [ -z $VER ] && \
 # version number
@@ -43,11 +39,7 @@ VER=$(cat $RDIR/VERSION)
 
 # kernel version string appended to 3.4.x-idleKernel-hlte-
 # (shown in Settings -> About device)
-<<<<<<< HEAD
-KERNEL_VERSION=$VARIANT-$VER
-=======
 KERNEL_VERSION=$VARIANT-$VER-note5port
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a
 
 # output directory of flashable kernel
 OUT_DIR=$RDIR

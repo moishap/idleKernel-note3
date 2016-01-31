@@ -658,8 +658,6 @@
 /dev/hidraw[0-9]*	u:object_r:ovr_device:s0
 /dev/peel_ir	u:object_r:ir_device:s0
 /dev/pipes(/.*)?    u:object_r:system_fifo:s0
-/dev/p3		u:object_r:sem_device:s0
-/dev/p61		u:object_r:sem_device:s0
 /dev/pn547		u:object_r:nfc_device:s0
 /dev/sec-nfc		u:object_r:nfc_device:s0
 /dev/sec-nfc-fn		u:object_r:nfc_device:s0
@@ -670,10 +668,7 @@
 /dev/socket/dir_enc_report	u:object_r:vold_socket:s0
 /dev/socket/drsd        u:object_r:drsd_socket:s0
 /dev/socket/epm     u:object_r:epm_socket:s0
-<<<<<<< HEAD:ik.ramdisk/variant/tmo/file_contexts
-/dev/socket/firewalld                                 u:object_r:firewalld_socket:s0
-=======
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a:ik.ramdisk/common/file_contexts
+# /dev/socket/firewalld                                 u:object_r:firewalld_socket:s0
 /dev/socket/frigate		u:object_r:frigate_socket:s0
 /dev/socket/imsd	u:object_r:imsd_socket:s0
 /dev/socket/ipsec_socket        u:object_r:ipsec_socket:s0
@@ -683,10 +678,7 @@
 /dev/socket/ppm     u:object_r:epm_socket:s0
 /dev/socket/rild[0-9]*	u:object_r:rild_socket:s0
 /dev/socket/rild-debug[0-9]* u:object_r:rild_debug_socket:s0
-<<<<<<< HEAD:ik.ramdisk/variant/tmo/file_contexts
-/dev/socket/sme_socket          u:object_r:imsd_socket:s0
-=======
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a:ik.ramdisk/common/file_contexts
+# /dev/socket/sme_socket          u:object_r:imsd_socket:s0
 /dev/socket/ss_conn_daemon      u:object_r:ss_conn_daemon_socket:s0
 /dev/socket/taa                  u:object_r:tz_socket:s0
 /dev/socket/tz                  u:object_r:tz_socket:s0
@@ -700,12 +692,9 @@
 /dev/t-base-tui                    u:object_r:tui_device:s0
 /dev/tuihw	u:object_r:tz_device:s0
 /dev/tzdev	u:object_r:tz_device:s0
-<<<<<<< HEAD:ik.ramdisk/variant/tmo/file_contexts
-/dev/tzic	u:object_r:tz_device:s0
-/dev/tzirs	u:object_r:tz_device:s0
-=======
+# /dev/tzic	u:object_r:tz_device:s0
+# /dev/tzirs	u:object_r:tz_device:s0
 /dev/tzic	u:object_r:tzic_device:s0
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a:ik.ramdisk/common/file_contexts
 /dev/url	u:object_r:url_device:s0
 /dev/usb(/.*)?	u:object_r:usb_device:s0
 /dev/usb.*	u:object_r:usb_device:s0
@@ -826,7 +815,6 @@
 /dev/dir_enc_report	u:object_r:report_device:s0
 /dev/ecryptfs		u:object_r:ecryptfs_device:s0
 /dev/ehci_power         u:object_r:mif_device:s0
-/dev/exynos-mem		u:object_r:graphics_device:s0
 /dev/fimg2d(/.*)?     	u:object_r:fimg2d_video_device:s0
 /dev/gps_geofence_wake			u:object_r:gps_device:s0
 /dev/invensense			u:object_r:sensors_device:s0
@@ -1121,24 +1109,10 @@
 /data/clipboard1[0-9][0-9](/.*)?  u:object_r:knox_clipboard_file:s0
 /data/container(/.*)?	u:object_r:container_app_data_backend:s0
 /data/knox(/.*)?	u:object_r:container_app_data_backend:s0
-<<<<<<< HEAD:ik.ramdisk/variant/tmo/file_contexts
-/mnt/shell/emulated/([1-9])?[0-9](/.*)?  u:object_r:media_rw_data_file:s0
-/mnt/shell/enc_emulated/([1-9])?[0-9](/.*)?  u:object_r:media_rw_data_file:s0
-/mnt/shell/enc_media/([1-9])?[0-9](/.*)?  u:object_r:media_rw_data_file:s0
-/mnt/shell/emulated/1[0-8][0-9](/.*)?           u:object_r:container_app_data_backend:s0
-/mnt/shell/emulated/19[0-4](/.*)?               u:object_r:container_app_data_backend:s0
-/mnt/shell/emulated/1[0-9][0-9]/\.irm(/.*)?     u:object_r:irm_media_data_file:s0
-/mnt/shell/knox-emulated/1[0-8][0-9](/.*)?  u:object_r:container_app_data_backend:s0
-/mnt/shell/knox-emulated/19[0-4](/.*)?  u:object_r:container_app_data_backend:s0
-=======
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a:ik.ramdisk/common/file_contexts
 /data/knox/data/19[5-9](/.*)?	        u:object_r:bbccontainer_app_data_backend:s0
-/data/knox/secure_fs/enc_media(/.*)?	        u:object_r:media_rw_data_file:s0
-/data/knox/secure_fs/enc_user(/.*)?	        u:object_r:media_rw_data_file:s0
 /data/knox/sdcard/19[5-9](/.*)?	        u:object_r:bbccontainer_app_data_backend:s0
 /mnt/shell/knox-emulated/19[5-9](/.*)?  u:object_r:bbccontainer_app_data_backend:s0
-/data/security/aasa(/.*)?               u:object_r:security_spota_file:s0
-/data/security/spota(/.*)?              u:object_r:security_spota_file:s0
+
 /data/system/container(/.*)?	u:object_r:container_system_file:s0
 
 ############################# 
@@ -1253,8 +1227,6 @@
 
 /system/bin/tsdaemon            u:object_r:tsdaemon_exec:s0
 
-<<<<<<< HEAD:ik.ramdisk/variant/tmo/file_contexts
-=======
 #line 1 "vendor/samsung/common/sepolicy/carrier/carrier_kor/file_contexts"
 /system/bin/dmbserver   u:object_r:dmb_exec:s0
 /dev/tdmb               u:object_r:tdmb_device:s0
@@ -1272,4 +1244,3 @@
 /system/bin/iwland      u:object_r:iwland_exec:s0
 /dev/iwland(/.*)?       u:object_r:skt_socket:s0
 /system/bin/tbased      u:object_r:tbased_exec:s
->>>>>>> 342972b6d19903e8c092df8bf4f5f26da56c161a:ik.ramdisk/common/file_contexts
